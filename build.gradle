@@ -1,0 +1,51 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.gradleup.shadow' version '8.3.5'
+}
+
+group = 'org.localts'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.11.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+    implementation 'com.github.weisj:jsvg:1.7.2'
+    implementation 'net.raphimc:MinecraftAuth:4.1.2'
+    implementation 'com.twelvemonkeys.imageio:imageio-webp:3.12.0'
+}
+
+application {
+    mainClass = 'org.localts.ui.RefreshTokenApp'
+}
+
+tasks.register('runConsole', JavaExec) {
+    group = 'application'
+    description = 'Console refresh-token debug flow'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'Main'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.localts.ui.RefreshTokenApp'
+    }
+}
+
+shadowJar {
+    archiveClassifier = 'all'
+    mergeServiceFiles()
+    manifest {
+        attributes 'Main-Class': 'org.localts.ui.RefreshTokenApp'
+    }
+}
